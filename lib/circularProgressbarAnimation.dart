@@ -11,6 +11,7 @@ class CircularProgressbarWithAnimation extends StatelessWidget {
   final String symbol;
   final Duration? duration;
   final List<ColorRule>? colorConditions;
+  final TextStyle? textStyle;
 
   CircularProgressbarWithAnimation(
       {Key? key,
@@ -22,7 +23,8 @@ class CircularProgressbarWithAnimation extends StatelessWidget {
       this.innerStrokeColor = Colors.purpleAccent,
       this.innerStrokeWidth = 15,
       this.strokeWidth = 5,
-      this.duration})
+      this.duration,
+      this.textStyle})
       : super(key: key);
 
   double _from = 0;
@@ -49,27 +51,29 @@ class CircularProgressbarWithAnimation extends StatelessWidget {
                 tween: Tween<double>(begin: _from, end: _to),
                 curve: Curves.easeInOut,
                 duration: duration ?? const Duration(seconds: 1),
-                builder: (context, double index, widget) => Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        CustomPaint(
-                            painter: ArcPainter(
-                                from: _from,
-                                to: index,
-                                radius: (constraints.maxWidth / 2) - 10,
-                                strokeWidth: innerStrokeWidth,
-                                color: _getConditionalColor(index * 100) ??
-                                    innerStrokeColor)),
-                        Text(
-                          '${(index * 100).toInt()}$symbol',
-                          style: TextStyle(
-                              fontSize: 32,
-                              fontWeight: FontWeight.bold,
-                              color: _getConditionalColor(index * 100) ??
-                                  innerStrokeColor),
-                        )
-                      ],
-                    )),
+                builder: (context, double index, widget) {
+                  Color color =
+                      _getConditionalColor(index * 100) ?? innerStrokeColor;
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CustomPaint(
+                          painter: ArcPainter(
+                              from: _from,
+                              to: index,
+                              radius: (constraints.maxWidth / 2) - 10,
+                              strokeWidth: innerStrokeWidth,
+                              color: color)),
+                      Text('${(index * 100).toInt()}$symbol',
+                          style: textStyle == null
+                              ? TextStyle(
+                                  fontSize: 32,
+                                  fontWeight: FontWeight.bold,
+                                  color: color)
+                              : textStyle!.copyWith(color: color))
+                    ],
+                  );
+                }),
           ],
         ),
       );
