@@ -1,4 +1,4 @@
-import 'package:circularprogressanimated/circularProgressbarWithAnimation.widget.dart';
+import 'package:circularprogressanimated/circularProgressbarAnimation.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -12,7 +12,7 @@ class _HomeState extends State<Home> {
   final TextStyle _textStyle1 = const TextStyle(
       fontWeight: FontWeight.bold, fontSize: 18, color: Colors.grey);
 
-  double _to = 0.6;
+  double _to = 60;
 
   @override
   Widget build(BuildContext context) {
@@ -21,49 +21,51 @@ class _HomeState extends State<Home> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Center(
-          child: SizedBox(
-            width: 200,
-            height: 200,
-            child: CircularProgressbarWithAnimation(
-              stroke: 5,
-              innerStroke: 15,
-              from: 0,
-              to: _to,
-              strokeColor: Colors.grey.shade300,
-              innerStrokeColor: Colors.purpleAccent,
-              innerStrokeColorList: [
-                CircularProgressWithAnimationColor(
-                    color: Colors.grey.shade400,
-                    index: 0.2,
-                    operator:
-                        CircularProgressAnimColorOperator.isLowerAndEqual),
-                CircularProgressWithAnimationColor(
-                    color: Colors.redAccent,
-                    index: 0.4,
-                    operator:
-                        CircularProgressAnimColorOperator.isLowerAndEqual),
-                CircularProgressWithAnimationColor(
-                    color: Colors.green, index: 1),
-              ],
-              textStyle: const TextStyle(
-                  color: Colors.purpleAccent,
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold),
-            ),
+        SizedBox(
+          width: 200,
+          height: 200,
+          child: CircularProgressbarWithAnimation(
+            duration: const Duration(seconds: 2),
+            symbol: '%',
+            from: 0,
+            to: _to,
+            innerStrokeColor: Colors.purpleAccent,
+            strokeColor: Colors.grey.shade300,
+            innerStrokeWidth: 15,
+            strokeWidth: 5,
+            colorConditions: [
+              ColorRule(
+                color: Colors.redAccent,
+                rangeIndex: [21, 40],
+              ),
+              ColorRule(
+                color: Colors.grey.shade400,
+                rangeIndex: [0, 20],
+              ),
+              ColorRule(
+                color: Colors.purpleAccent,
+                rangeIndex: [41, 97],
+              ),
+              ColorRule(
+                color: Colors.green,
+                rangeIndex: [98, 100],
+              )
+            ],
           ),
         ),
         const SizedBox(
           height: 60,
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50),
-          child: Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: [
-              for (final button in _buttons()) button,
-            ],
+        Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 50),
+            child: Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: [
+                for (final button in _buttons()) button,
+              ],
+            ),
           ),
         )
       ],
@@ -85,7 +87,7 @@ class _HomeState extends State<Home> {
       TextButton(
           onPressed: () {
             setState(() {
-              _to = 0.4;
+              _to = 40;
             });
           },
           child: Text(
@@ -95,7 +97,7 @@ class _HomeState extends State<Home> {
       TextButton(
           onPressed: () {
             setState(() {
-              _to = 0.126;
+              _to = 12.6;
             });
           },
           child: Text(
@@ -105,7 +107,7 @@ class _HomeState extends State<Home> {
       TextButton(
           onPressed: () {
             setState(() {
-              _to = 0.7835;
+              _to = 78.35;
             });
           },
           child: Text(
@@ -115,7 +117,7 @@ class _HomeState extends State<Home> {
       TextButton(
           onPressed: () {
             setState(() {
-              _to = 1;
+              _to = 100;
             });
           },
           child: Text(
